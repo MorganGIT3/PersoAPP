@@ -1,5 +1,5 @@
 import Header from '@/components/Header';
-import HeroSection from '@/components/HeroSection';
+import { Hero } from '@/components/Hero';
 import FeaturesSection from '@/components/FeaturesSection';
 import ContactSection from '@/components/ContactSection';
 
@@ -8,7 +8,7 @@ export default function Home() {
     <div className="min-h-screen">
       <Header />
       <main>
-        <HeroSection />
+        <Hero />
         <FeaturesSection />
         <ContactSection />
       </main>
