@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 function Hero() {
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(
-    () => ["révolutionnaire", "intelligente", "automatisée", "efficace", "innovante"],
+    () => ["révolutionnaire", "intelligente", "automatisée", "professionnelle", "innovante"],
     []
   );
 
@@ -27,12 +27,12 @@ function Hero() {
         <div className="flex gap-8 py-12 lg:py-20 items-center justify-center flex-col">
           <div>
             <Button variant="secondary" size="sm" className="gap-4" data-testid="button-launch-article">
-              Découvrez notre solution <MoveRight className="w-4 h-4" />
+              Solution pour artisans <MoveRight className="w-4 h-4" />
             </Button>
           </div>
           <div className="flex gap-4 flex-col">
             <h1 className="text-5xl md:text-7xl max-w-2xl tracking-tighter text-center font-regular">
-              <span className="text-foreground">Une prospection immobilière</span>
+              <span className="text-foreground">Une gestion d'entreprise artisanale</span>
               <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1">
                 &nbsp;
                 {titles.map((title, index) => (
@@ -60,10 +60,10 @@ function Hero() {
             </h1>
 
             <p className="text-lg md:text-xl leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center">
-              Gérer une agence immobilière aujourd'hui est déjà assez complexe. 
-              Évitez les complications supplémentaires en abandonnant les méthodes 
-              de prospection obsolètes et fastidieuses. Notre objectif est de rationaliser 
-              votre processus commercial, le rendant plus facile et plus rapide que jamais.
+              Gérer une entreprise artisanale aujourd'hui demande efficacité et professionnalisme. 
+              Créez des devis en quelques clics, visualisez vos projets avec l'IA, gérez vos 
+              chantiers et prospects. Notre objectif est de digitaliser votre activité 
+              pour vous faire gagner du temps et impressionner vos clients.
             </p>
           </div>
           <div className="flex flex-row gap-3">

@@ -1,27 +1,45 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { Search, Camera, BarChart3 } from 'lucide-react';
+import { FileText, Wand2, Users, Calendar, Euro, Camera } from 'lucide-react';
 import dashboardImage from '@assets/generated_images/Dashboard_interface_mockup_f808bffd.png';
 import photoEnhancementImage from '@assets/generated_images/Photo_enhancement_comparison_c1eb7a8f.png';
 
 export default function FeaturesSection() {
   const features = [
     {
-      icon: <Search className="h-8 w-8 text-blue-400" />,
-      title: "Détection d'Opportunités",
-      description: "Recherche automatique sur Leboncoin, SeLoger et autres plateformes. Filtrage intelligent par localisation, prix et critères personnalisés.",
+      icon: <FileText className="h-8 w-8 text-blue-400" />,
+      title: "Générateur de Devis",
+      description: "Créez des devis professionnels en quelques clics. Templates personnalisables pour piscines, paysage, menuiserie et plus.",
       color: "from-blue-500/20 to-blue-600/20",
     },
     {
-      icon: <Camera className="h-8 w-8 text-purple-400" />,
-      title: "Amélioration Photos IA",
-      description: "Module IA qui optimise automatiquement luminosité, contraste et netteté. Mode staging professionnel pour valoriser vos biens.",
+      icon: <Wand2 className="h-8 w-8 text-purple-400" />,
+      title: "Visualisation IA",
+      description: "Uploadez une photo du terrain, sélectionnez votre projet et l'IA génère un rendu professionnel pour impressionner vos clients.",
       color: "from-purple-500/20 to-purple-600/20",
     },
     {
-      icon: <BarChart3 className="h-8 w-8 text-green-400" />,
-      title: "Dashboard Agence",
-      description: "Tableau de bord centralisé pour suivre vos leads, analyser les performances et gérer votre portefeuille immobilier.",
+      icon: <Users className="h-8 w-8 text-green-400" />,
+      title: "Gestion des Prospects",
+      description: "CRM intégré pour suivre vos leads, organiser vos rendez-vous et transformer vos prospects en clients fidèles.",
       color: "from-green-500/20 to-green-600/20",
+    },
+    {
+      icon: <Calendar className="h-8 w-8 text-orange-400" />,
+      title: "Planning Chantiers",
+      description: "Calendrier intelligent pour planifier vos interventions, suivre l'avancement et respecter vos délais.",
+      color: "from-orange-500/20 to-orange-600/20",
+    },
+    {
+      icon: <Euro className="h-8 w-8 text-indigo-400" />,
+      title: "Suivi Paiements",
+      description: "Facturation automatique, suivi des encaissements et relances clients pour optimiser votre trésorerie.",
+      color: "from-indigo-500/20 to-indigo-600/20",
+    },
+    {
+      icon: <Camera className="h-8 w-8 text-pink-400" />,
+      title: "Portfolio Avant/Après",
+      description: "Showcasez vos réalisations avec des portfolios automatiques. Génération PDF pour présenter vos références.",
+      color: "from-pink-500/20 to-pink-600/20",
     },
   ];
 
@@ -33,15 +51,15 @@ export default function FeaturesSection() {
             <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-blue-600 bg-clip-text text-transparent">
               Fonctionnalités
             </span>{' '}
-            <span className="text-foreground">Puissantes</span>
+            <span className="text-foreground">Complètes</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Tout ce dont votre agence a besoin pour automatiser la prospection et améliorer la présentation de vos biens.
+            Tout ce dont votre entreprise artisanale a besoin pour professionnaliser vos devis, gérer vos chantiers et impressionner vos clients.
           </p>
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {features.map((feature, index) => (
             <Card key={index} className="hover-elevate cursor-pointer group" data-testid={`card-feature-${index}`}>
               <CardContent className="p-6">
@@ -59,24 +77,24 @@ export default function FeaturesSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <h3 className="text-2xl md:text-3xl font-bold text-foreground">
-              Interface Intuitive
+              Dashboard Complet
             </h3>
             <p className="text-lg text-muted-foreground">
-              Notre dashboard vous donne une vue d'ensemble complète de votre activité. 
-              Suivez vos leads en temps réel, analysez les tendances du marché et optimisez vos performances.
+              Notre interface vous donne un contrôle total sur votre activité artisanale. 
+              Suivez vos chantiers, gérez vos prospects et optimisez votre productivité depuis un seul endroit.
             </p>
             <ul className="space-y-3">
               <li className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span className="text-muted-foreground">Notifications en temps réel des nouveaux biens</span>
+                <span className="text-muted-foreground">Suivi en temps réel de tous vos chantiers</span>
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                <span className="text-muted-foreground">Traitement automatique des photos uploadées</span>
+                <span className="text-muted-foreground">Génération automatique de devis professionnels</span>
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-muted-foreground">Analytics avancées et rapports personnalisés</span>
+                <span className="text-muted-foreground">Analytics détaillées de votre activité</span>
               </li>
             </ul>
           </div>
@@ -102,24 +120,24 @@ export default function FeaturesSection() {
           </div>
           <div className="space-y-6 order-1 lg:order-2">
             <h3 className="text-2xl md:text-3xl font-bold text-foreground">
-              IA d'Amélioration Photo
+              Visualisation IA de Projets
             </h3>
             <p className="text-lg text-muted-foreground">
-              Transformez automatiquement vos photos de biens grâce à notre IA avancée. 
-              Fini les photos sombres ou mal cadrées qui rebutent vos clients.
+              Impressionnez vos clients avec des rendus professionnels de leurs futurs projets. 
+              Uploadez une photo du terrain et obtenez une visualisation réaliste en quelques minutes.
             </p>
             <ul className="space-y-3">
               <li className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span className="text-muted-foreground">Correction automatique de l'exposition et des couleurs</span>
+                <span className="text-muted-foreground">IA spécialisée pour piscines, paysage et menuiserie</span>
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                <span className="text-muted-foreground">Mode staging pour un rendu professionnel</span>
+                <span className="text-muted-foreground">Rendus photoréalistes pour convaincre vos clients</span>
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-muted-foreground">Traitement en moins de 30 secondes</span>
+                <span className="text-muted-foreground">Génération en moins de 5 minutes</span>
               </li>
             </ul>
           </div>

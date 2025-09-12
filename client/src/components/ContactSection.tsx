@@ -40,7 +40,7 @@ export default function ContactSection() {
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Rejoignez les agences qui utilisent déjà AgentPro pour automatiser leur prospection immobilière.
+            Rejoignez les artisans qui utilisent déjà ArtisanPro pour digitaliser et développer leur activité.
           </p>
         </div>
 
@@ -50,7 +50,7 @@ export default function ContactSection() {
             <CardHeader>
               <CardTitle className="text-2xl">Demander une Démo</CardTitle>
               <p className="text-muted-foreground">
-                Découvrez comment AgentPro peut transformer votre agence immobilière.
+                Découvrez comment ArtisanPro peut révolutionner votre entreprise artisanale.
               </p>
             </CardHeader>
             <CardContent>
@@ -81,7 +81,7 @@ export default function ContactSection() {
                       type="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      placeholder="jean@monagence.fr"
+                      placeholder="jean@piscines-dupont.fr"
                       required
                       data-testid="input-email"
                     />
@@ -90,7 +90,7 @@ export default function ContactSection() {
                 
                 <div>
                   <label htmlFor="company" className="block text-sm font-medium mb-2">
-                    Nom de l'agence
+                    Nom de l'entreprise
                   </label>
                   <Input
                     id="company"
@@ -98,7 +98,7 @@ export default function ContactSection() {
                     type="text"
                     value={formData.company}
                     onChange={handleInputChange}
-                    placeholder="Mon Agence Immobilière"
+                    placeholder="Piscines Dupont, Menuiserie Martin..."
                     data-testid="input-company"
                   />
                 </div>
@@ -134,7 +134,7 @@ export default function ContactSection() {
           <div className="space-y-8">
             <Card className="hover-elevate">
               <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-4">Rejoignez AgentPro</h3>
+                <h3 className="text-xl font-semibold mb-4">Rejoignez ArtisanPro</h3>
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -170,7 +170,7 @@ export default function ContactSection() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <Mail className="h-5 w-5 text-blue-400" />
-                    <span className="text-muted-foreground">contact@agentpro.fr</span>
+                    <span className="text-muted-foreground">contact@artisanpro.fr</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Phone className="h-5 w-5 text-purple-400" />
