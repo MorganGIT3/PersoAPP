@@ -1,0 +1,9 @@
+.local/
+temp_contenu.txt
+*.log
+.env.local
+node_modules
+dist
+.server
+.replit
+
