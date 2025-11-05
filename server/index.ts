@@ -50,7 +50,7 @@ app.use((req, res, next) => {
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
+  if (process.env.NODE_ENV === "development" || !process.env.NODE_ENV) {
     await setupVite(app, server);
   } else {
     serveStatic(app);
@@ -61,11 +61,36 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
+  
+  // Ensure port is 5000 if not explicitly set or if invalid
+  const finalPort = (isNaN(port) || port <= 0) ? 5000 : port;
+
+  // On Windows, use localhost instead of 0.0.0.0 to avoid ENOTSUP errors
+  // On Linux, use 0.0.0.0 for network access
+  const host = process.platform === "win32" ? "127.0.0.1" : "0.0.0.0";
+
+  // Build listen options
+  const listenOptions: any = {
+    port: finalPort,
+    host: host,
+  };
+
+  // Only enable reusePort on Linux where it's supported
+  if (process.platform === "linux") {
+    listenOptions.reusePort = true;
+  }
+
+  // Handle server errors gracefully
+  server.on("error", (err: any) => {
+    if (err.code === "EADDRINUSE") {
+      log(`Port ${finalPort} is already in use`, "server");
+    } else {
+      log(`server listen error: ${err?.code || err?.message}`, "server");
+    }
+    process.exit(1);
+  });
+
+  server.listen(listenOptions, () => {
+    log(`serving on http://${host}:${finalPort}`);
   });
 })();

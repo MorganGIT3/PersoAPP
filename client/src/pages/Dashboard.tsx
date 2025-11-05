@@ -18,11 +18,14 @@ import {
   MapPin,
   Wrench,
   Filter,
-  Plus
+  Plus,
+  LogOut
 } from 'lucide-react';
 import { Link } from 'wouter';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Dashboard() {
+  const { logout } = useAuth();
   // Mock data for charts
   const projectsData = [
     { month: 'Jan', value: 12 },
@@ -107,8 +110,17 @@ export default function Dashboard() {
                 <Plus className="h-4 w-4" />
                 Nouveau
               </Button>
-              <Button variant="outline" size="sm" data-testid="button-logout">
-                Déconnexion
+              <Button 
+                variant="outline" 
+                size="sm" 
+                data-testid="button-logout"
+                onClick={() => {
+                  logout()
+                }}
+                className="p-2"
+                title="Déconnexion"
+              >
+                <LogOut className="w-4 h-4" />
               </Button>
             </div>
           </div>

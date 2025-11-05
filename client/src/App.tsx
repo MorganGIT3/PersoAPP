@@ -3,6 +3,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/contexts/AuthContext";
 import Home from "@/pages/Home";
 import Dashboard from "@/pages/Dashboard";
 import QuotesPage from "@/pages/QuotesPage";
@@ -14,6 +15,12 @@ import PaymentsPage from "@/pages/PaymentsPage";
 import PortfolioPage from "@/pages/PortfolioPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import NotFound from "@/pages/not-found";
+import Contenu from "@/pages/Contenu";
+import YoutubeContent from "@/pages/YoutubeContent";
+import TikTokContent from "@/pages/TikTokContent";
+import ContentNotes from "@/pages/ContentNotes";
+import Calendrier from "@/pages/Calendrier";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 function Router() {
   return (
@@ -28,6 +35,31 @@ function Router() {
       <Route path="/dashboard/payments" component={PaymentsPage} />
       <Route path="/dashboard/portfolio" component={PortfolioPage} />
       <Route path="/dashboard/analytics" component={AnalyticsPage} />
+      <Route path="/contenu">
+        <ProtectedRoute>
+          <Contenu />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/contenu/youtube">
+        <ProtectedRoute>
+          <YoutubeContent />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/contenu/tiktok">
+        <ProtectedRoute>
+          <TikTokContent />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/contenu/notes">
+        <ProtectedRoute>
+          <ContentNotes />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/calendrier">
+        <ProtectedRoute>
+          <Calendrier />
+        </ProtectedRoute>
+      </Route>
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
@@ -37,10 +69,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
