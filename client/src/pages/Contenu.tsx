@@ -230,14 +230,14 @@ export default function Contenu() {
         </div>
 
       {/* Content Layer */}
-      <div className="relative z-10 min-h-screen">
+      <div className="relative z-10 min-h-screen overflow-hidden">
         {/* Content Card */}
-        <div className="flex items-center justify-center min-h-screen px-4 pt-24">
-          <div className="relative w-[95vw] max-w-[1400px] h-[85vh]">
-            <div className="relative backdrop-blur-xl bg-white/30 border border-slate-200/60 rounded-3xl p-8 shadow-2xl h-full overflow-hidden">
+        <div className="flex items-center justify-center h-screen px-4 pt-24 pb-8">
+          <div className="relative w-[95vw] max-w-[1400px] h-full">
+            <div className="relative backdrop-blur-xl bg-white/30 border border-slate-200/60 rounded-3xl p-8 shadow-2xl h-full overflow-hidden flex flex-col">
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-slate-50/80 to-transparent pointer-events-none" />
 
-              <div className="relative z-10 h-full overflow-auto">
+              <div className="relative z-10 flex-1 overflow-auto">
                 {/* Header */}
                 <div className="border-b border-slate-200/60 pb-6 mb-6">
                   <h2 className="text-3xl font-light text-slate-800 mb-2">Contenu</h2>

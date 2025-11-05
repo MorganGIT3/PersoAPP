@@ -218,12 +218,12 @@ export default function Calendrier() {
         </div>
 
       {/* Content Layer */}
-      <div className="relative z-10 min-h-screen">
+      <div className="relative z-10 min-h-screen overflow-hidden">
         {/* Calendar Content */}
-        <div className="pt-24 pb-8">
-          <div className="relative backdrop-blur-xl bg-white/30 border border-slate-200/60 rounded-3xl mx-4 shadow-2xl overflow-hidden">
+        <div className="h-screen pt-24 pb-8">
+          <div className="relative backdrop-blur-xl bg-white/30 border border-slate-200/60 rounded-3xl mx-4 shadow-2xl h-full overflow-hidden flex flex-col">
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-slate-50/80 to-transparent pointer-events-none" />
-            <div className="relative z-10 min-h-[calc(100vh-8rem)]">
+            <div className="relative z-10 flex-1 overflow-auto">
               <FullScreenCalendar />
             </div>
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-transparent via-white/10 to-white/20 pointer-events-none" />
