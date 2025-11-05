@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Plus, X } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface Subscription {
   id: string
@@ -129,13 +130,27 @@ export default function DashboardContent() {
   }
 
   return (
-    <div className="p-8 space-y-6">
-      <div>
+    <motion.div
+      className="p-8 space-y-6"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+      >
         <h2 className="text-3xl font-light text-slate-800 mb-2">Tableau de bord</h2>
         <p className="text-slate-500 text-sm">Gérez vos revenus et abonnements</p>
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
         <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60">
           <div className="flex items-center justify-between mb-4">
             <span className="text-lg font-medium text-slate-700">Revenus du mois</span>
@@ -165,10 +180,15 @@ export default function DashboardContent() {
           </div>
           <div className="text-3xl font-light text-slate-800">{monthlySubscriptionsTotal.toFixed(2)}</div>
         </div>
-      </div>
+      </motion.div>
 
       {subscriptions.length > 0 && (
-        <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60">
+        <motion.div
+          className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           <h3 className="text-lg font-medium text-slate-700 mb-4">Abonnements expirant</h3>
           <div className="space-y-2">
             {subscriptions.slice(0, 3).map(sub => {
@@ -186,11 +206,16 @@ export default function DashboardContent() {
               )
             })}
           </div>
-        </div>
+        </motion.div>
       )}
 
       {revenueHistory.length > 0 && (
-        <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60">
+        <motion.div
+          className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           <h3 className="text-lg font-medium text-slate-700 mb-4">Historique des revenus</h3>
           <div className="space-y-2">
             {[...revenueHistory].reverse().map(entry => (
@@ -209,10 +234,15 @@ export default function DashboardContent() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       )}
 
-      <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60">
+      <motion.div
+        className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+      >
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-medium text-slate-700">Abonnements</h3>
           <button
@@ -247,7 +277,7 @@ export default function DashboardContent() {
             )
           })}
         </div>
-      </div>
+      </motion.div>
 
       {/* Add Revenue Modal */}
       {showAddRevenueModal && (
@@ -407,6 +437,6 @@ export default function DashboardContent() {
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }

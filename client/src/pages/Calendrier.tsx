@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useLocation } from 'wouter'
 import { useAuth } from '@/contexts/AuthContext'
 import { LogOut } from 'lucide-react'
+import { motion } from 'framer-motion'
 import {
   Scene,
   PerspectiveCamera,
@@ -163,6 +164,18 @@ export default function Calendrier() {
     }
   }, [])
 
+  // Masquer la scrollbar pendant l'animation
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    const timer = setTimeout(() => {
+      document.body.style.overflow = ''
+    }, 500) // Masquer pendant 500ms (durée de l'animation + marge)
+    return () => {
+      clearTimeout(timer)
+      document.body.style.overflow = ''
+    }
+  }, [])
+
   // Rediriger si non connecté
   useEffect(() => {
     if (!isConnected) {
@@ -175,12 +188,9 @@ export default function Calendrier() {
   }
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-slate-50">
-      {/* Three.js Background */}
-      <div ref={mountRef} className="fixed inset-0 w-full h-screen" style={{ zIndex: 0 }} />
-
-      {/* Top Navigation - Fixed position */}
-      <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50">
+    <>
+      {/* Top Navigation - Fixed position (no animation) */}
+      <div className="fixed top-8 left-0 right-0 flex justify-center z-50">
         <div className="bg-white/80 backdrop-blur-md border border-slate-200/60 rounded-full px-6 py-3 shadow-lg">
             <div className="flex items-center gap-6">
               <span className="text-slate-800 font-medium">PersoM</span>
@@ -215,22 +225,38 @@ export default function Calendrier() {
               </div>
             </div>
           </div>
-        </div>
+      </div>
 
-      {/* Content Layer */}
-      <div className="relative z-10 min-h-screen overflow-hidden">
+      <motion.main
+        className="relative min-h-screen w-full overflow-hidden bg-slate-50"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -30 }}
+        transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+      >
+        {/* Three.js Background */}
+        <div ref={mountRef} className="fixed inset-0 w-full h-screen" style={{ zIndex: 0 }} />
+
+        {/* Content Layer */}
+        <div className="relative z-10 min-h-screen overflow-hidden">
         {/* Calendar Content */}
         <div className="h-screen pt-24 pb-8">
           <div className="relative backdrop-blur-xl bg-white/30 border border-slate-200/60 rounded-3xl mx-4 shadow-2xl h-full overflow-hidden flex flex-col">
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-slate-50/80 to-transparent pointer-events-none" />
-            <div className="relative z-10 flex-1 overflow-auto">
+            <motion.div
+              className="relative z-10 flex-1 overflow-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+            >
               <FullScreenCalendar />
-            </div>
+            </motion.div>
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-transparent via-white/10 to-white/20 pointer-events-none" />
           </div>
         </div>
-      </div>
-    </main>
+        </div>
+      </motion.main>
+    </>
   )
 }
 

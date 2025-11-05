@@ -25,6 +25,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 function Router() {
   return (
     <Switch>
+      <Route path="/Tableau-de-bord" component={Home} />
       <Route path="/" component={Home} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/dashboard/quotes" component={QuotesPage} />

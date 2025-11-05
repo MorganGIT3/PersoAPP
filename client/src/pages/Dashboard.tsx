@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import { useAuth } from '@/contexts/AuthContext';
+import { motion } from 'framer-motion';
 
 export default function Dashboard() {
   const { logout } = useAuth();
@@ -80,9 +81,15 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+    <motion.div
+      className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/30"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -30 }}
+      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+    >
       {/* Top Navigation - Fixed position */}
-      <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50">
+      <div className="fixed top-8 left-0 right-0 flex justify-center z-50">
         <div className="bg-white/80 backdrop-blur-md border border-slate-200/60 rounded-full px-6 py-3 shadow-lg">
             <div className="flex items-center gap-6">
               <span className="text-slate-800 font-medium">PersoM</span>
@@ -116,7 +123,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-        </div>
+      </div>
 
       <div className="flex min-h-screen">
         <Sidebar />
@@ -166,9 +173,19 @@ export default function Dashboard() {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 space-y-6 overflow-auto">
+        <motion.main
+          className="flex-1 p-6 space-y-6 overflow-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+        >
           {/* Metrics Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <MetricCard
               title="Chiffre d'Affaires"
               value="€165,000"
@@ -208,10 +225,15 @@ export default function Dashboard() {
               icon={<TrendingUp className="h-5 w-5" />}
               gradient="from-orange-500 to-red-600"
             />
-          </div>
+          </motion.div>
 
           {/* Charts Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <motion.div
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
             <ChartCard
               title="Chantiers Réalisés"
               type="line"
@@ -231,10 +253,15 @@ export default function Dashboard() {
               color="#8b5cf6"
               height={250}
             />
-          </div>
+          </motion.div>
 
           {/* Recent Properties & Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <motion.div
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
             {/* Recent Projects */}
             <Card className="lg:col-span-2 hover-elevate">
               <CardHeader className="flex flex-row items-center justify-between">
@@ -340,10 +367,10 @@ export default function Dashboard() {
                 </p>
               </CardContent>
             </Card>
-          </div>
-        </main>
+          </motion.div>
+        </motion.main>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
