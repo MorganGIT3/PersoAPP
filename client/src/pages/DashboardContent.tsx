@@ -89,6 +89,12 @@ export default function DashboardContent() {
     setShowAddRevenueModal(false)
   }
 
+  const handleDeleteRevenue = (id: string) => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce revenu ?')) {
+      setRevenueHistory(revenueHistory.filter(entry => entry.id !== id))
+    }
+  }
+
   const handleAddSubscription = () => {
     if (!newSubscription.name || !newSubscription.price || !newSubscription.endDate) {
       alert('Veuillez remplir tous les champs')
@@ -230,7 +236,16 @@ export default function DashboardContent() {
                     minute: '2-digit'
                   })}</div>
                 </div>
-                <div className="text-lg font-medium text-green-600">+{entry.amount.toFixed(0)}€</div>
+                <div className="flex items-center gap-4">
+                  <div className="text-lg font-medium text-green-600">+{entry.amount.toFixed(0)}€</div>
+                  <button
+                    onClick={() => handleDeleteRevenue(entry.id)}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1 rounded transition-colors"
+                    title="Supprimer ce revenu"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
