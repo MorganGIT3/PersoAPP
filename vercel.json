@@ -1,42 +1,15 @@
 {
-  "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist/public",
   "installCommand": "npm ci",
-  "framework": null,
-  "functions": {
-    "api/index.ts": {
-      "runtime": "nodejs@20.x"
-    }
-  },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/api/index"
     },
     {
-      "source": "/((?!api/).*)",
-      "destination": "/api/index.ts"
-    }
-  ],
-  "headers": [
-    {
       "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        }
-      ]
+      "destination": "/api/index"
     }
   ]
 }
-
