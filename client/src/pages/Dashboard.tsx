@@ -21,11 +21,12 @@ import {
   Plus,
   LogOut
 } from 'lucide-react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Dashboard() {
   const { logout } = useAuth();
+  const [, setLocation] = useLocation();
   // Mock data for charts
   const projectsData = [
     { month: 'Jan', value: 12 },
@@ -79,10 +80,48 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-      <Sidebar />
-      
-      <div className="flex-1 flex flex-col">
+    <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+      {/* Top Navigation - Fixed position */}
+      <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50">
+        <div className="bg-white/80 backdrop-blur-md border border-slate-200/60 rounded-full px-6 py-3 shadow-lg">
+            <div className="flex items-center gap-6">
+              <span className="text-slate-800 font-medium">PersoM</span>
+              <div className="flex items-center gap-4">
+                <button
+                  className="text-sm px-3 py-1 rounded-full transition-colors bg-slate-800 text-white border border-slate-300"
+                >
+                  Dashboard
+                </button>
+                <button
+                  onClick={() => setLocation('/contenu')}
+                  className="text-sm px-3 py-1 rounded-full transition-colors text-slate-600 hover:text-slate-800 cursor-pointer"
+                >
+                  Contenu
+                </button>
+                <button
+                  onClick={() => setLocation('/calendrier')}
+                  className="text-sm px-3 py-1 rounded-full transition-colors text-slate-600 hover:text-slate-800 cursor-pointer"
+                >
+                  Calendrier
+                </button>
+                <button
+                  onClick={() => {
+                    logout()
+                  }}
+                  className="p-2 rounded-full transition-colors text-slate-600 hover:text-slate-800 hover:bg-slate-100 cursor-pointer"
+                  title="Déconnexion"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div className="flex min-h-screen">
+        <Sidebar />
+        
+        <div className="flex-1 flex flex-col">
         {/* Top Header */}
         <header className="bg-white/80 backdrop-blur-sm border-b border-border px-6 py-4">
           <div className="flex items-center justify-between">
@@ -303,6 +342,7 @@ export default function Dashboard() {
             </Card>
           </div>
         </main>
+        </div>
       </div>
     </div>
   );

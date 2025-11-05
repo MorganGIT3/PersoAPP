@@ -35,6 +35,11 @@ export default function YoutubeContent() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
 
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   // Three.js background with YouTube red theme
   useEffect(() => {
     if (!mountRef.current) return
@@ -179,7 +184,10 @@ export default function YoutubeContent() {
   }, [isConnected, setLocation])
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    // Only scroll to bottom if there are messages
+    if (messages.length > 0) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
   }, [messages])
 
   const handleSend = () => {
@@ -237,7 +245,7 @@ export default function YoutubeContent() {
       {/* Content Layer */}
       <div className="relative z-10 min-h-screen">
         {/* Top Navigation */}
-        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50">
           <div className="bg-white/80 backdrop-blur-md border border-slate-200/60 rounded-full px-6 py-3 shadow-lg">
             <div className="flex items-center gap-6">
               <button

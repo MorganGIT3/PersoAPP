@@ -17,7 +17,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <Building2 className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold text-foreground">AgentPro</span>
+            <span className="text-xl font-bold text-foreground">Application personnel de morgan rize</span>
           </div>
 
           {/* Desktop Navigation */}
