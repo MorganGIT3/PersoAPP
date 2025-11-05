@@ -34,6 +34,7 @@ export default function TikTokContent() {
   const [, setLocation] = useLocation()
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   // Scroll to top on mount
   useEffect(() => {
@@ -190,8 +191,8 @@ export default function TikTokContent() {
     }
   }, [messages])
 
-  const handleSend = () => {
-    if (!input.trim()) return
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -201,18 +202,48 @@ export default function TikTokContent() {
     }
 
     setMessages(prev => [...prev, userMessage])
+    const userInput = input
     setInput('')
+    setIsLoading(true)
 
-    // Simulate assistant response
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userInput,
+          platform: 'tiktok'
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Erreur lors de la génération de la réponse')
+      }
+
+      const data = await response.json()
+      
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: `Voici une idée de script TikTok basée sur votre demande : "${input}".\n\n**Hook (0-3s)** : Commencez par quelque chose de choquant ou intriguant pour retenir l'attention.\n\n**Valeur (3-15s)** : Donnez une astuce, un fait intéressant ou une valeur ajoutée rapide.\n\n**Call to Action (15-20s)** : Demandez un like, partage ou suivi.`,
+        content: data.response,
         timestamp: new Date()
       }
       setMessages(prev => [...prev, assistantMessage])
-    }, 1000)
+    } catch (error: any) {
+      console.error('Error:', error)
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: `Désolé, une erreur s'est produite : ${error.message}. Veuillez vérifier que la clé API OpenAI est configurée.`,
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, errorMessage])
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleSaveToNotes = (content: string) => {
@@ -249,12 +280,12 @@ export default function TikTokContent() {
           <div className="bg-white/80 backdrop-blur-md border border-slate-200/60 rounded-full px-6 py-3 shadow-lg">
             <div className="flex items-center gap-6">
               <button
-                onClick={() => setLocation('/contenu')}
+                onClick={() => setLocation('/contenu/tiktok')}
                 className="p-2 rounded-full transition-colors text-slate-600 hover:text-slate-800 hover:bg-slate-100"
               >
                 <ArrowLeft className="w-4 h-4" />
               </button>
-              <span className="text-slate-800 font-medium">TikTok Content</span>
+              <span className="text-slate-800 font-medium">Créer des idées TikTok</span>
               <button
                 onClick={() => setLocation('/contenu/notes')}
                 className="text-sm px-3 py-1 rounded-full transition-colors text-slate-600 hover:text-slate-800 hover:bg-slate-100 cursor-pointer"
@@ -315,14 +346,25 @@ export default function TikTokContent() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                   placeholder="Demandez un script TikTok..."
-                  className="flex-1 px-4 py-3 bg-white/80 rounded-xl border border-slate-300 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                  disabled={isLoading}
+                  className="flex-1 px-4 py-3 bg-white/80 rounded-xl border border-slate-300 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 disabled:opacity-50"
                 />
                 <button
                   onClick={handleSend}
-                  className="px-6 py-3 bg-slate-800 text-white rounded-xl hover:bg-slate-700 transition-colors flex items-center gap-2"
+                  disabled={isLoading}
+                  className="px-6 py-3 bg-slate-800 text-white rounded-xl hover:bg-slate-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Send className="w-4 h-4" />
-                  Envoyer
+                  {isLoading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Génération...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      Envoyer
+                    </>
+                  )}
                 </button>
               </div>
             </div>

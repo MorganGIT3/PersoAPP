@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import { registerRoutes } from "../server/routes";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
@@ -20,18 +21,23 @@ async function initializeApp() {
   if (initPromise) return initPromise;
   
   initPromise = (async () => {
-    // Register API routes
+    // Register API routes FIRST
     await registerRoutes(app);
     
-    // SPA routing: serve index.html for all non-API routes
-    // On Vercel, static files are served automatically, so this only handles SPA routes
-    app.get("*", (req, res) => {
-      // Skip API routes and static assets
-      if (req.path.startsWith("/api") || req.path.includes(".")) {
+    // SPA routing: serve index.html for all non-API GET routes
+    // IMPORTANT: This must come AFTER API routes and only handle GET requests
+    app.get("*", (req, res, next) => {
+      // Skip API routes - let Express handle them
+      if (req.path.startsWith("/api")) {
+        return next(); // Let Express handle API routes
+      }
+      
+      // Skip static assets
+      if (req.path.includes(".")) {
         return res.status(404).json({ message: "Not found" });
       }
       
-      // Serve index.html for SPA routes
+      // Serve index.html for SPA routes (GET only)
       const indexPath = path.join(process.cwd(), "dist/public/index.html");
       res.sendFile(indexPath, (err) => {
         if (err) {

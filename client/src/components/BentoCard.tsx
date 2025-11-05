@@ -62,7 +62,7 @@ export const BentoCard = ({
           <span className="text-xs font-medium text-slate-700 uppercase tracking-wide">
             {name.toLowerCase()}
           </span>
-        </div>
+      </div>
       </div>
       <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.02] group-hover:dark:bg-neutral-800/10" />
     </div>

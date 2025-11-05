@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useLocation } from 'wouter'
 import { useAuth } from '@/contexts/AuthContext'
-import { ArrowLeft, Send, Bot, Save } from 'lucide-react'
+import { ArrowLeft, Send, Bot, Save, Plus } from 'lucide-react'
 import {
   Scene,
   PerspectiveCamera,
@@ -21,6 +21,15 @@ interface Message {
   role: 'user' | 'assistant'
   content: string
   timestamp: Date
+  ideas?: ContentIdea[]
+}
+
+interface ContentIdea {
+  type: 'TOFU' | 'MOFU' | 'BOFU'
+  title: string
+  hook: string
+  concept: string
+  cta: string
 }
 
 export default function YoutubeContent() {
@@ -190,8 +199,10 @@ export default function YoutubeContent() {
     }
   }, [messages])
 
-  const handleSend = () => {
-    if (!input.trim()) return
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -201,18 +212,81 @@ export default function YoutubeContent() {
     }
 
     setMessages(prev => [...prev, userMessage])
+    const userInput = input
     setInput('')
+    setIsLoading(true)
 
-    // Simulate assistant response
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userInput,
+          platform: 'youtube'
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Erreur lors de la génération de la réponse')
+      }
+
+      const data = await response.json()
+      
+      // Parse JSON from response
+      let ideas: ContentIdea[] = []
+      try {
+        // Try to extract JSON from the response (look for first { ... } block)
+        const responseText = data.response
+        // Find the first complete JSON object
+        let braceCount = 0
+        let jsonStart = -1
+        for (let i = 0; i < responseText.length; i++) {
+          if (responseText[i] === '{') {
+            if (braceCount === 0) jsonStart = i
+            braceCount++
+          } else if (responseText[i] === '}') {
+            braceCount--
+            if (braceCount === 0 && jsonStart !== -1) {
+              const jsonStr = responseText.substring(jsonStart, i + 1)
+              try {
+                const parsed = JSON.parse(jsonStr)
+                if (parsed.ideas && Array.isArray(parsed.ideas)) {
+                  ideas = parsed.ideas
+                  break
+                }
+              } catch (parseError) {
+                // Continue searching
+              }
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Error parsing JSON:', e)
+      }
+      
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: `Voici une idée de script YouTube basée sur votre demande : "${input}".\n\n**Introduction (0-15s)** : Accrochez l'attention avec une question intrigante.\n\n**Développement (15s-2min)** : Expliquez le concept en détail avec des exemples concrets.\n\n**Conclusion (2min-2min15s)** : Résumez et appelez à l'action (like, commentaire, abonnement).`,
-        timestamp: new Date()
+        content: data.response,
+        timestamp: new Date(),
+        ideas: ideas
       }
       setMessages(prev => [...prev, assistantMessage])
-    }, 1000)
+    } catch (error: any) {
+      console.error('Error:', error)
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: `Désolé, une erreur s'est produite : ${error.message}. Veuillez vérifier que la clé API OpenAI est configurée.`,
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, errorMessage])
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleSaveToNotes = (content: string) => {
@@ -233,6 +307,24 @@ export default function YoutubeContent() {
     alert('Script sauvegardé dans Content Notes !')
   }
 
+  const handleAddTitle = (idea: ContentIdea) => {
+    const saved = localStorage.getItem('persom_content_notes')
+    const notes = saved ? JSON.parse(saved) : []
+    
+    const newNote = {
+      id: Date.now().toString(),
+      title: idea.title,
+      content: `Type: ${idea.type}\nHook 3s: ${idea.hook}\nConcept: ${idea.concept}\nCTA: ${idea.cta}`,
+      platform: 'youtube',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+
+    notes.push(newNote)
+    localStorage.setItem('persom_content_notes', JSON.stringify(notes))
+    alert(`Titre "${idea.title}" ajouté à Content Notes !`)
+  }
+
   if (!isConnected) {
     return null
   }
@@ -249,12 +341,12 @@ export default function YoutubeContent() {
           <div className="bg-white/80 backdrop-blur-md border border-slate-200/60 rounded-full px-6 py-3 shadow-lg">
             <div className="flex items-center gap-6">
               <button
-                onClick={() => setLocation('/contenu')}
+                onClick={() => setLocation('/contenu/youtube')}
                 className="p-2 rounded-full transition-colors text-slate-600 hover:text-slate-800 hover:bg-slate-100"
               >
                 <ArrowLeft className="w-4 h-4" />
               </button>
-              <span className="text-slate-800 font-medium">YouTube Content</span>
+              <span className="text-slate-800 font-medium">Créer des idées YouTube</span>
               <button
                 onClick={() => setLocation('/contenu/notes')}
                 className="text-sm px-3 py-1 rounded-full transition-colors text-slate-600 hover:text-slate-800 hover:bg-slate-100 cursor-pointer"
@@ -290,15 +382,43 @@ export default function YoutubeContent() {
                             : 'bg-white/80 text-slate-800'
                         }`}
                       >
-                        <p className="whitespace-pre-wrap">{message.content}</p>
-                        {message.role === 'assistant' && (
-                          <button
-                            onClick={() => handleSaveToNotes(message.content)}
-                            className="mt-2 flex items-center gap-2 text-xs text-slate-600 hover:text-slate-800 transition-colors"
-                          >
-                            <Save className="w-3 h-3" />
-                            Enregistrer en content note
-                          </button>
+                        {message.role === 'assistant' && message.ideas && message.ideas.length > 0 ? (
+                          <div className="space-y-4">
+                            {message.ideas.map((idea, index) => (
+                              <div key={index} className="border-b border-slate-200 pb-4 last:border-b-0 last:pb-0">
+                                <div className="flex items-start justify-between gap-4">
+                                  <div className="flex-1">
+                                    <p className="font-bold text-lg mb-2">{idea.title}</p>
+                                    <p className="text-xs text-slate-500 mb-1">Type: {idea.type}</p>
+                                    <p className="text-sm text-slate-600"><strong>Hook 3s:</strong> {idea.hook}</p>
+                                    <p className="text-sm text-slate-600 mt-1"><strong>Concept:</strong> {idea.concept}</p>
+                                    <p className="text-sm text-slate-600 mt-1"><strong>CTA:</strong> {idea.cta}</p>
+                                  </div>
+                                  <button
+                                    onClick={() => handleAddTitle(idea)}
+                                    className="flex items-center gap-2 px-3 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm whitespace-nowrap"
+                                    title="Ajouter à Content Notes"
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                    Ajouter
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <>
+                            <p className="whitespace-pre-wrap">{message.content}</p>
+                            {message.role === 'assistant' && (
+                              <button
+                                onClick={() => handleSaveToNotes(message.content)}
+                                className="mt-2 flex items-center gap-2 text-xs text-slate-600 hover:text-slate-800 transition-colors"
+                              >
+                                <Save className="w-3 h-3" />
+                                Enregistrer en content note
+                              </button>
+                            )}
+                          </>
                         )}
                       </div>
                     </div>
@@ -315,14 +435,25 @@ export default function YoutubeContent() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                   placeholder="Demandez un script YouTube..."
-                  className="flex-1 px-4 py-3 bg-white/80 rounded-xl border border-slate-300 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                  disabled={isLoading}
+                  className="flex-1 px-4 py-3 bg-white/80 rounded-xl border border-slate-300 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 disabled:opacity-50"
                 />
                 <button
                   onClick={handleSend}
-                  className="px-6 py-3 bg-slate-800 text-white rounded-xl hover:bg-slate-700 transition-colors flex items-center gap-2"
+                  disabled={isLoading}
+                  className="px-6 py-3 bg-slate-800 text-white rounded-xl hover:bg-slate-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Send className="w-4 h-4" />
-                  Envoyer
+                  {isLoading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Génération...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      Envoyer
+                    </>
+                  )}
                 </button>
               </div>
             </div>

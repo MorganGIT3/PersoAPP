@@ -24,6 +24,7 @@ import {
 import { Link, useLocation } from 'wouter';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
+import { MeshGradient } from "@paper-design/shaders-react";
 
 export default function Dashboard() {
   const { logout } = useAuth();
@@ -82,12 +83,27 @@ export default function Dashboard() {
 
   return (
     <motion.div
-      className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/30"
+      className="relative min-h-screen w-full overflow-hidden"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -30 }}
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
     >
+      {/* MeshGradient Background */}
+      <div className="fixed inset-0 z-0">
+        <MeshGradient
+          style={{ height: "100vh", width: "100vw" }}
+          distortion={0.8}
+          swirl={0.1}
+          offsetX={0}
+          offsetY={0}
+          scale={1}
+          rotation={0}
+          speed={1}
+          colors={["hsl(216, 90%, 27%)", "hsl(243, 68%, 36%)", "hsl(205, 91%, 64%)", "hsl(211, 61%, 57%)"]}
+        />
+      </div>
+
       {/* Top Navigation - Fixed position */}
       <div className="fixed top-8 left-0 right-0 flex justify-center z-50">
         <div className="bg-white/80 backdrop-blur-md border border-slate-200/60 rounded-full px-6 py-3 shadow-lg">
@@ -110,6 +126,12 @@ export default function Dashboard() {
                   className="text-sm px-3 py-1 rounded-full transition-colors text-slate-600 hover:text-slate-800 cursor-pointer"
                 >
                   Calendrier
+                </button>
+                <button
+                  onClick={() => setLocation('/contenu/notes')}
+                  className="text-sm px-3 py-1 rounded-full transition-colors text-slate-600 hover:text-slate-800 cursor-pointer"
+                >
+                  Content Note
                 </button>
                 <button
                   onClick={() => {

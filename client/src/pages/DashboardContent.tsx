@@ -157,7 +157,7 @@ export default function DashboardContent() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60">
+        <div className="bg-white/40 backdrop-blur-md rounded-2xl p-6 border border-slate-200/60">
           <div className="flex items-center justify-between mb-4">
             <span className="text-lg font-medium text-slate-700">Revenus du mois</span>
             <div className="flex items-center gap-2">
@@ -173,14 +173,14 @@ export default function DashboardContent() {
           <div className="text-3xl font-light text-slate-800">{monthlyRevenue.toFixed(2)}</div>
         </div>
 
-        <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60">
+        <div className="bg-white/40 backdrop-blur-md rounded-2xl p-6 border border-slate-200/60">
           <div className="flex items-center justify-between mb-4">
             <span className="text-lg font-medium text-slate-700">Revenus nets</span>
           </div>
           <div className="text-3xl font-light text-green-600">{netRevenue.toFixed(2)}</div>
         </div>
 
-        <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60">
+        <div className="bg-white/40 backdrop-blur-md rounded-2xl p-6 border border-slate-200/60">
           <div className="flex items-center justify-between mb-4">
             <span className="text-lg font-medium text-slate-700">Abonnements mensuels</span>
           </div>
@@ -200,7 +200,7 @@ export default function DashboardContent() {
             {subscriptions.slice(0, 3).map(sub => {
               const daysLeft = getDaysUntilExpiry(sub.endDate)
               return (
-                <div key={sub.id} className="flex items-center justify-between p-3 bg-white/60 rounded-lg border border-slate-200/60">
+                <div key={sub.id} className="flex items-center justify-between p-3 bg-white/40 backdrop-blur-sm rounded-lg border border-slate-200/60">
                   <div>
                     <div className="font-medium text-slate-800">{sub.name}</div>
                     <div className="text-sm text-slate-500">
@@ -225,7 +225,7 @@ export default function DashboardContent() {
           <h3 className="text-lg font-medium text-slate-700 mb-4">Historique des revenus</h3>
           <div className="space-y-2">
             {[...revenueHistory].reverse().map(entry => (
-              <div key={entry.id} className="flex items-center justify-between p-3 bg-white/60 rounded-lg border border-slate-200/60">
+              <div key={entry.id} className="flex items-center justify-between p-3 bg-white/40 backdrop-blur-sm rounded-lg border border-slate-200/60">
                 <div>
                   <div className="font-medium text-slate-800">{entry.title}</div>
                   <div className="text-sm text-slate-500">{new Date(entry.date).toLocaleDateString('fr-FR', {
@@ -253,7 +253,7 @@ export default function DashboardContent() {
       )}
 
       <motion.div
-        className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/60"
+        className="bg-white/40 backdrop-blur-md rounded-2xl p-6 border border-slate-200/60"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.5 }}
@@ -272,7 +272,7 @@ export default function DashboardContent() {
           {subscriptions.map(sub => {
             const daysLeft = getDaysUntilExpiry(sub.endDate)
             return (
-              <div key={sub.id} className="flex items-center justify-between p-3 bg-white/60 rounded-lg border border-slate-200/60">
+                <div key={sub.id} className="flex items-center justify-between p-3 bg-white/40 backdrop-blur-sm rounded-lg border border-slate-200/60">
                 <div>
                   <div className="font-medium text-slate-800">{sub.name}</div>
                   <div className="text-sm text-slate-500">

@@ -16,8 +16,12 @@ import PortfolioPage from "@/pages/PortfolioPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import NotFound from "@/pages/not-found";
 import Contenu from "@/pages/Contenu";
+import YoutubeHub from "@/pages/YoutubeHub";
 import YoutubeContent from "@/pages/YoutubeContent";
+import YoutubeContenus from "@/pages/YoutubeContenus";
+import TikTokHub from "@/pages/TikTokHub";
 import TikTokContent from "@/pages/TikTokContent";
+import TikTokContenus from "@/pages/TikTokContenus";
 import ContentNotes from "@/pages/ContentNotes";
 import Calendrier from "@/pages/Calendrier";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -43,12 +47,32 @@ function Router() {
       </Route>
       <Route path="/contenu/youtube">
         <ProtectedRoute>
+          <YoutubeHub />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/contenu/youtube/idees">
+        <ProtectedRoute>
           <YoutubeContent />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/contenu/youtube/contenus">
+        <ProtectedRoute>
+          <YoutubeContenus />
         </ProtectedRoute>
       </Route>
       <Route path="/contenu/tiktok">
         <ProtectedRoute>
+          <TikTokHub />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/contenu/tiktok/idees">
+        <ProtectedRoute>
           <TikTokContent />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/contenu/tiktok/contenus">
+        <ProtectedRoute>
+          <TikTokContenus />
         </ProtectedRoute>
       </Route>
       <Route path="/contenu/notes">
